@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<!-- 拦截器包 -->
+	<package name="global" extends="json-default">
+    	<interceptors>
+    		<interceptor name="authority" class="org.filter.authInterceptor" />
+    		<interceptor-stack name="mydefault">
+    			<interceptor-ref name="defaultStack" />
+    			<interceptor-ref name="authority"></interceptor-ref>
+    		</interceptor-stack>
+    	</interceptors>
+		<default-interceptor-ref name="mydefault" />
+    	<global-results>
+    		<result type="json" name="error">
+    			<param name="root">result</param>
+    		</result>
+    	</global-results>
+    </package>
+
+	<!-- 主接口模块包，被拦截 -->
+    <package name="default" extends="json-default,global"  namespace="/">
+    	<!-- UserAction -->
+    	<action name="login" class="org.action.UserAction" method="login">
+			<result type="json" name="success">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<action name="checkUsername" class="org.action.UserAction" method="checkUsername">
+			<result type="json" name="success">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<action name="register" class="org.action.UserAction" method="register">
+			<result type="json" name="success">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<action name="getUserList" class="org.action.UserAction" method="getUserList">
+			<result type="json" name="success">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<action name="logout" class="org.action.UserAction" method="logout">
+			<result type="json" name="success">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<action name="deleteUser" class="org.action.UserAction" method="deleteUser">
+			<result type="json" name="success">
+				<param name="root">result</param>
+			</result>
+		</action>
+		
+		<!-- XLSAction -->
+		<action name="xlsExport" class="org.action.XLSAction" method="xlsExport">
+			<result type="json" name="success">
+				<param name="root">result</param>
+			</result>
+		</action>
+		
+		<!-- FileAction -->
+		<action name="getFileList" class="org.action.FileioAction" method="getFileList">
+			<result type="json" name="success">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<action name="deleteFile" class="org.action.FileioAction" method="deleteFile">
+			<result type="json" name="success">
+				<param name="root">result</param>
+			</result>
+		</action>
+		
+		<!-- LogAction -->
+		<action name="getLogList" class="org.action.LogAction" method="getLogList">
+			<result type="json" name="success">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<action name="getLogList02" class="org.action.LogAction" method="getLogList02">
+			<result type="json" name="success">
+				<param name="root">result</param>
+			</result>
+		</action>
+    </package>
+
+	<!-- 设置允许传输最大值  60MB==62914560 -->
+    <constant name="struts.multipart.maxSize" value="1073741824" />
+    
+    <!-- 文件IO包，不被拦截 -->
+	<package name="fileIO" extends="json-default" namespace="/">
+		<!-- 文件上传	FileAction -->
+    	<action name="fileUpload" class="org.action.FileioAction" method="fileUpload">
+    		<result name="success">fileio.jsp</result>
+    		<!-- <param name="allowedTypes"></param> 允许文件类型 -->  
+    		<interceptor-ref name="fileUpload">  
+               <param name="maximumSize">1048576000</param>  <!-- 50M -->
+           	</interceptor-ref>  
+        	<interceptor-ref name="defaultStack" /> <!-- 默认拦截器 -->  
+    	</action>
+       <!-- 文件下载，不能写method属性，否则会强制将stream转为String，导致失败 -->
+       <action name="fileDownload" class="org.action.FileioAction">
+			<result name="success" type="stream">
+				<param name="contentType">text/plain</param>
+				<param name="contentDisposition">attachment;fileName="${fileName}"</param>
+				<param name="inputName">fileDown</param>
+				<param name="bufferSize">1024</param>
+			</result>
+		</action>
+    </package>
+    
+    <!-- 不拦截的action -->
+    <package name="noFilter"  extends="json-default"  namespace="/">
+    	<action name="getMemory" class="org.action.PropertyAction" method="getMemory">
+			<result type="json" name="success">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<action name="getDisk" class="org.action.PropertyAction" method="getDisk">
+			<result type="json" name="success">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<action name="getOnlineNum" class="org.action.OnlineNumAction" method="getOnlineNum">
+			<result type="json" name="success">
+				<param name="root">result</param>
+			</result>
+		</action>
+    </package>
+</struts>

@@ -1,0 +1,8 @@
+ul li{
+	list-style: none;
+}
+.container{
+	width: 90%;
+	background: red;
+	/*margin: 0px auto;*/
+}

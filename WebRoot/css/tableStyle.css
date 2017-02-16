@@ -1,0 +1,27 @@
+table.tables01 {
+	font-family: verdana,arial,sans-serif;
+	font-size:11px;
+	color:#333333;
+	/*border-width: 1px;*/
+	border-color: #999999;
+	border-collapse: collapse;
+}
+
+table.tables01 thead tr th{
+	background-color:#56A2CF;
+	padding: 8px;
+	border-color: #a9c6c9;
+	color: white;
+}
+table.tables01 thead tr td{
+	border-width: 1px;
+	padding: 8px;
+}
+table.tables01 tbody tr{
+	color:#636363;
+	text-align:center;
+	background-color:#EEF2FB;
+}
+#userList tr:hover{
+	background-color:#c3dde0;
+}
